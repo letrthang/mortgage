@@ -1,45 +1,45 @@
 package com.squad1.hackathon.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
+
+import java.util.Objects;
 
 
-
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Getter
+@Setter
 @Entity
 @Table(name = "account_account_type")
 public class AccountAccountType {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer accountAccountTypeId;
 
-    @Column(name = "account_id", nullable = false)
-    private Long accountId;
+    @ManyToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "accountId")
+    private AccountType AccountId;
 
-    @Column(name = "account_type_id", nullable = false)
-    private Long accountTypeId;
+    @ManyToOne
+    @JoinColumn(name = "account_type_id", referencedColumnName = "accountId")
+    private AccountType AccountTypeId;
 
-    // Getters and setters
-    public Long getId() {
-        return id;
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        AccountAccountType that = (AccountAccountType) o;
+        return getAccountAccountTypeId() != null && Objects.equals(getAccountAccountTypeId(), that.getAccountAccountTypeId());
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
-    public Long getAccountTypeId() {
-        return accountTypeId;
-    }
-
-    public void setAccountTypeId(Long accountTypeId) {
-        this.accountTypeId = accountTypeId;
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }
