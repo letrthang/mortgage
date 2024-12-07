@@ -6,11 +6,16 @@ import com.squad1.hackathon.dto.UserMapper;
 import com.squad1.hackathon.entity.User;
 import com.squad1.hackathon.exception.UserNotFoundException;
 import com.squad1.hackathon.repository.UserRepoImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,6 +115,45 @@ public class UserServicesImpl implements UserServices {
             return users.stream()
                     .map(userMapper::toDTO)
                     .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new UserNotFoundException("Error retrieving users: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<UserDTO> findAllUsers(int page, int size, String sortBy) {
+//        try {
+//            List<UserDTO> allUsers = new ArrayList<>();
+//            Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+//            Page<User> userPage;
+//
+//            do {
+//                userPage = userRepository.findAllPageable(pageable);
+//                List<UserDTO> usersInPage = userPage.getContent()
+//                        .stream()
+//                        .map(userMapper::toDTO)
+//                        .toList();
+//
+//                allUsers.addAll(usersInPage);
+//
+//                pageable = userPage.nextPageable();
+//            } while (userPage.hasNext());
+//
+//            return allUsers;
+//
+//        } catch (Exception e) {
+//            throw new UserNotFoundException("Error retrieving users: " + e.getMessage());
+//        }
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<User> userPage = userRepository.findAllPageable(pageable);
+
+            // Convert users in this page to DTOs and return
+            return userPage.getContent()
+                    .stream()
+                    .map(userMapper::toDTO)
+                    .collect(Collectors.toList());
+
         } catch (Exception e) {
             throw new UserNotFoundException("Error retrieving users: " + e.getMessage());
         }

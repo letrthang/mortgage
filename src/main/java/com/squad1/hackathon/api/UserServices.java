@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,14 @@ public interface UserServices {
     @Operation(summary = "Find all users")
     @ApiResponse(responseCode = "200", description = "Success")
     List<UserDTO> findAllUsers();
-    // pagnation
+
+    // using pagination
+    @GetMapping(path = "/findAllUsersWithPagination")
+    @Operation(summary = "Find all users with pagination")
+    @ApiResponse(responseCode = "200", description = "Success")
+    List<UserDTO> findAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "email") String sortBy);
 
 }
