@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 // Thang Le
 @Tag(name = "UserServices")
 @RestController
@@ -23,5 +25,20 @@ public interface UserServices {
     @Operation(summary = "saveUser")
     @ApiResponse(responseCode = "200", description = "Success")
     UserDTO saveUser(@Valid @RequestBody UserDTO userDTO);
+
+    @DeleteMapping(path = "/deleteUser/{email}")
+    @Operation(summary = "Delete user by email")
+    @ApiResponse(responseCode = "200", description = "Success")
+    void deleteUser(@PathVariable String email);
+
+    @GetMapping(path = "/findUser/{email}")
+    @Operation(summary = "Find user by email")
+    @ApiResponse(responseCode = "200", description = "Success")
+    UserDTO findUserByEmail(@PathVariable String email);
+
+    @GetMapping(path = "/findAllUsers")
+    @Operation(summary = "Find all users")
+    @ApiResponse(responseCode = "200", description = "Success")
+    List<UserDTO> findAllUsers();
 
 }
