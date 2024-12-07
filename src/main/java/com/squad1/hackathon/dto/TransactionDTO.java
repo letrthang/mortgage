@@ -23,7 +23,7 @@ public class TransactionDTO {
     @JsonProperty("from_type")
     private String accountNumberFromType;
 
-    @JsonProperty("to_type")
+    @JsonProperty("to")
     private String accountNumberTo;
 
     @JsonProperty("to_type")
