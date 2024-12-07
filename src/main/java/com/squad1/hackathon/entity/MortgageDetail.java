@@ -21,6 +21,8 @@ public class MortgageDetail {
     private Integer accountAccountTypeId;
     private Double propertyCost;
     private Double balance;
+    private String mortgagePassword;
+    private String mortgageType;
 
     @Override
     public final boolean equals(Object o) {
