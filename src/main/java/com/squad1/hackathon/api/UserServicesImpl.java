@@ -7,6 +7,9 @@ import com.squad1.hackathon.exception.UserNotFoundException;
 import com.squad1.hackathon.repository.UserRepoImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServicesImpl implements UserServices {
 
@@ -41,6 +44,44 @@ public class UserServicesImpl implements UserServices {
             return userDTO;
         } catch (Exception e) {
             throw new UserNotFoundException("Error saving user: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteUser(String email) {
+        try {
+            User user = userRepository.findByEmail(email);
+            if (user == null) {
+                throw new UserNotFoundException("User not found with email: " + email);
+            }
+            userRepository.delete(user);
+        } catch (Exception e) {
+            throw new UserNotFoundException("Error deleting user: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public UserDTO findUserByEmail(String email) {
+        try {
+            User user = userRepository.findByEmail(email);
+            if (user == null) {
+                throw new UserNotFoundException("User not found with email: " + email);
+            }
+            return userMapper.toDTO(user);
+        } catch (Exception e) {
+            throw new UserNotFoundException("Error finding user: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<UserDTO> findAllUsers() {
+        try {
+            List<User> users = userRepository.findAll();
+            return users.stream()
+                    .map(userMapper::toDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new UserNotFoundException("Error retrieving users: " + e.getMessage());
         }
     }
 }
