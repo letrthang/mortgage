@@ -1,4 +1,5 @@
 package com.squad1.hackathon.api;
+import com.squad1.hackathon.dto.LoginResponse;
 import com.squad1.hackathon.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,7 +19,7 @@ public interface UserServices {
     @PostMapping(path = "/verifyUser")
     @Operation(summary = "verifyUser", description = "")
     @ApiResponse(responseCode = "200", description = "Success")
-    Boolean verifyUser(
+    LoginResponse verifyUser(
             @RequestHeader("email") String email, @RequestHeader("password") String password);
 
     @PostMapping(path = "/saveUser")

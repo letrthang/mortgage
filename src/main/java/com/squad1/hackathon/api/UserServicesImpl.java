@@ -1,5 +1,6 @@
 package com.squad1.hackathon.api;
 
+import com.squad1.hackathon.dto.LoginResponse;
 import com.squad1.hackathon.dto.UserDTO;
 import com.squad1.hackathon.dto.UserMapper;
 import com.squad1.hackathon.entity.User;
@@ -22,18 +23,21 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public Boolean verifyUser(String email, String password) {
-        Boolean ret = false;
+    public LoginResponse verifyUser(String email, String password) {
         try {
             var user = userRepository.findByEmail(email);
-            if (user != null && user.getPassword().equals(password)) {
-                ret = true;
+            if (user != null) {
+                if (user.getPassword().equals(password)) {
+                    return new LoginResponse(true, "login success");
+                } else {
+                    return new LoginResponse(false, "wrong password");
+                }
             }
+            return new LoginResponse(false, "user not found");
         } catch (Exception e) {
             e.printStackTrace();
+            return new LoginResponse(false, "error: " + e.getMessage());
         }
-
-        return ret;
     }
 
     @Override
