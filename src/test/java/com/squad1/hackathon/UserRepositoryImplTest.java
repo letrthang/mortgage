@@ -8,6 +8,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.squad1.hackathon.repository.UserRepository;
 import com.squad1.hackathon.repository.UserRepoImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -75,7 +79,7 @@ class UserRepositoryImplTest {
 
     @Test
     void findAll_ShouldReturnAllUsers() {
-        // Arrange
+
         List<User> expectedUsers = Arrays.asList(
                 new User("test1@email.com", "User1", "pass1",  Timestamp.valueOf("2000-01-01 00:00:00"), "M", "USER"),
                 new User("test2@email.com", "User2", "pass2",  Timestamp.valueOf("2001-01-01 00:00:00"), "M", "USER")
@@ -93,10 +97,9 @@ class UserRepositoryImplTest {
 
     @Test
     void findAll_ShouldReturnEmptyList_WhenNoUsers() {
-        // Arrange
+
         when(repository.findAll()).thenReturn(Collections.emptyList());
 
-        // Act
         List<User> result = userRepoImpl.findAll();
 
         // Assert
@@ -106,13 +109,11 @@ class UserRepositoryImplTest {
 
     @Test
     void findByName_ShouldReturnUser_WhenNameExists() {
-        // Arrange
         String name = "Test User";
         User expectedUser = createTestUser("test@email.com");
         expectedUser.setName(name);
         when(repository.findByName(name)).thenReturn(Optional.of(expectedUser));
 
-        // Act
         Optional<User> result = userRepoImpl.findByName(name);
 
         // Assert
@@ -124,11 +125,9 @@ class UserRepositoryImplTest {
 
     @Test
     void findByName_ShouldReturnEmpty_WhenNameNotFound() {
-        // Arrange
         String name = "Nonexistent User";
         when(repository.findByName(name)).thenReturn(Optional.empty());
 
-        // Act
         Optional<User> result = userRepoImpl.findByName(name);
 
         // Assert
@@ -137,9 +136,72 @@ class UserRepositoryImplTest {
     }
 
     @Test
+    void findAllPageable_ShouldReturnPageOfUsers() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<User> users = Arrays.asList(
+                new User("email1@test.com", "name1", "pass1", Timestamp.valueOf("1990-01-01 00:00:00"), "M", "USER"),
+                new User("email2@test.com", "name2", "pass2", Timestamp.valueOf("1990-01-01 00:00:00"), "F", "USER")
+        );
+        Page<User> expectedPage = new PageImpl<>(users, pageable, users.size());
+
+        when(repository.findAll(pageable)).thenReturn(expectedPage);
+
+        Page<User> result = userRepoImpl.findAllPageable(pageable);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.getContent().size());
+        assertEquals(users.get(0).getEmail(), result.getContent().get(0).getEmail());
+        assertEquals(users.get(1).getEmail(), result.getContent().get(1).getEmail());
+
+        verify(repository).findAll(pageable);
+    }
+
+    @Test
+    void findAllPageable_ShouldReturnEmptyPage_WhenNoUsers() {
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<User> emptyPage = new PageImpl<>(Collections.emptyList(), pageable, 0);
+
+        when(repository.findAll(pageable)).thenReturn(emptyPage);
+
+        Page<User> result = userRepoImpl.findAllPageable(pageable);
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.getContent().isEmpty());
+        assertEquals(0, result.getTotalElements());
+
+        verify(repository).findAll(pageable);
+    }
+
+    @Test
+    void findAllPageable_ShouldHandleDifferentPageSizes() {
+        Pageable pageable = PageRequest.of(1, 5); // Page 1 with size 5
+        List<User> users = Arrays.asList(
+                new User("email5@test.com", "name5", "pass5", Timestamp.valueOf("1990-01-01 00:00:00"), "M", "USER"),
+                new User("email6@test.com", "name6", "pass6", Timestamp.valueOf("1990-01-01 00:00:00"), "F", "USER")
+        );
+        Page<User> expectedPage = new PageImpl<>(users, pageable, 10); // Total 10 elements
+
+        when(repository.findAll(pageable)).thenReturn(expectedPage);
+
+        Page<User> result = userRepoImpl.findAllPageable(pageable);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.getContent().size());
+        assertEquals(10, result.getTotalElements());
+        assertEquals(1, result.getNumber()); // Page number
+        assertEquals(5, result.getSize()); // Page size
+
+        verify(repository).findAll(pageable);
+    }
+
+    @Test
     void delete_ShouldDeleteUser() {
-        // Arrange
-        User user = new User("test@email.com", "Test User", "password",  Timestamp.valueOf("2000-01-01 00:00:00"), "M", "USER");
+
+        User user = new User("test@email.com", "Test User", "password",  Timestamp.valueOf("1990-01-01 00:00:00"), "M", "USER");
         doNothing().when(repository).delete(user);
         // Act
         userRepoImpl.delete(user);
@@ -149,7 +211,7 @@ class UserRepositoryImplTest {
 
     @Test
     void delete_ShouldHandleNullUser() {
-        // Arrange
+
         User user = null;
         doThrow(new IllegalArgumentException("Entity must not be null")).when(repository).delete(user);
         // Act & Assert
