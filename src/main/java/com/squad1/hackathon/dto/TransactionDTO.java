@@ -5,9 +5,13 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TransactionDTO {
 
     @JsonProperty("customer_id")
@@ -22,7 +26,7 @@ public class TransactionDTO {
     @JsonProperty("to_type")
     private String accountNumberTo;
 
-    @JsonProperty("from_type")
+    @JsonProperty("to_type")
     private String accountNumberToType;
 
     @JsonProperty("amount")
