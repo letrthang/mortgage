@@ -1,8 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-hackathon,com.squad1.hackathon.config,SecurityConfig,41,0,0,0,8,0,3,0,3,0
-hackathon,com.squad1.hackathon,HackathonApplication,8,0,0,0,3,0,2,0,2,0
-hackathon,com.squad1.hackathon.repository,UserRepoImpl,0,31,0,0,0,9,0,6,0,6
-hackathon,com.squad1.hackathon.api,UserServicesImpl,53,0,4,0,17,0,5,0,3,0
-hackathon,com.squad1.hackathon.dto,UserMapper,13,0,0,0,2,0,2,0,2,0
-hackathon,com.squad1.hackathon.exception,UserNotFoundException,4,0,0,0,2,0,1,0,1,0
-hackathon,com.squad1.hackathon.exception,GlobalExceptionHandler,50,0,0,0,14,0,5,0,5,0
