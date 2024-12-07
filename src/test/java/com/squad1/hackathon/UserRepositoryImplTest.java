@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.squad1.hackathon.repository.UserRepository;
 import com.squad1.hackathon.repository.UserRepoImpl;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -27,9 +28,20 @@ class UserRepositoryImplTest {
     @InjectMocks
     private UserRepoImpl userRepoImpl;
 
+    private User createTestUser(String email) {
+        User user = new User();
+        user.setEmail(email);
+        user.setName("Test User");
+        user.setPassword("password");
+        user.setDob(Timestamp.valueOf("2000-01-01 00:00:00"));
+        user.setGender("M");
+        user.setRole("USER");
+        return user;
+    }
+
     @Test
     void saveAndUpdate_ShouldReturnSavedUser() {
-        User user = new User("test@email.com", "Test User", "password", "1990-01-01", );
+        User user = new User("test@email.com", "Test User", "password", Timestamp.valueOf("2000-01-01 00:00:00"), "M", "USER");
         when(repository.save(any(User.class))).thenReturn(user);
 
         User result = userRepoImpl.saveAndUpdate(user);
@@ -41,7 +53,7 @@ class UserRepositoryImplTest {
     @Test
     void findByEmail_ShouldReturnUser() {
         String email = "test@email.com";
-        User user = new User(email, "Test User", "password");
+        User user = new User(email, "Test User", "password", Timestamp.valueOf("2000-01-01 00:00:00"), "M", "USER");
         when(repository.findByEmail(email)).thenReturn(user);
 
         User result = userRepoImpl.findByEmail(email);
@@ -65,8 +77,8 @@ class UserRepositoryImplTest {
     void findAll_ShouldReturnAllUsers() {
         // Arrange
         List<User> expectedUsers = Arrays.asList(
-                new User("test1@email.com", "User1", "pass1"),
-                new User("test2@email.com", "User2", "pass2")
+                new User("test1@email.com", "User1", "pass1",  Timestamp.valueOf("2000-01-01 00:00:00"), "M", "USER"),
+                new User("test2@email.com", "User2", "pass2",  Timestamp.valueOf("2001-01-01 00:00:00"), "M", "USER")
         );
         when(repository.findAll()).thenReturn(expectedUsers);
 
@@ -93,39 +105,41 @@ class UserRepositoryImplTest {
     }
 
     @Test
-    void findByPassword_ShouldReturnUser_WhenPasswordExists() {
+    void findByName_ShouldReturnUser_WhenNameExists() {
         // Arrange
-        String password = "testPass";
-        User expectedUser = new User("test@email.com", "Test User", password);
-        when(repository.findByName(password)).thenReturn(Optional.of(expectedUser));
+        String name = "Test User";
+        User expectedUser = createTestUser("test@email.com");
+        expectedUser.setName(name);
+        when(repository.findByName(name)).thenReturn(Optional.of(expectedUser));
 
         // Act
-        Optional<User> result = userRepoImpl.findByPassword(password);
+        Optional<User> result = userRepoImpl.findByName(name);
 
         // Assert
-        verify(repository).findByName(password);
+        verify(repository).findByName(name);
         assertTrue(result.isPresent());
         assertEquals(expectedUser, result.get());
+        assertEquals(name, result.get().getName());
     }
 
     @Test
-    void findByPassword_ShouldReturnEmpty_WhenPasswordNotFound() {
+    void findByName_ShouldReturnEmpty_WhenNameNotFound() {
         // Arrange
-        String password = "nonexistentPass";
-        when(repository.findByName(password)).thenReturn(Optional.empty());
+        String name = "Nonexistent User";
+        when(repository.findByName(name)).thenReturn(Optional.empty());
 
         // Act
-        Optional<User> result = userRepoImpl.findByPassword(password);
+        Optional<User> result = userRepoImpl.findByName(name);
 
         // Assert
-        verify(repository).findByName(password);
+        verify(repository).findByName(name);
         assertTrue(result.isEmpty());
     }
 
     @Test
     void delete_ShouldDeleteUser() {
         // Arrange
-        User user = new User("test@email.com", "Test User", "password");
+        User user = new User("test@email.com", "Test User", "password",  Timestamp.valueOf("2000-01-01 00:00:00"), "M", "USER");
         doNothing().when(repository).delete(user);
         // Act
         userRepoImpl.delete(user);

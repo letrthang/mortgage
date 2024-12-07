@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserMapper {
     public User toEntity(UserDTO dto) {
-        return new User(dto.getEmail(), dto.getName(), dto.getPassword());
+        return new User(dto.getEmail(), dto.getName(), dto.getPassword(), dto.getDob(), dto.getGender(), dto.getRole());
     }
 }

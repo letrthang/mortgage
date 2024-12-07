@@ -28,8 +28,8 @@ public class UserRepoImpl {
     public User saveAndUpdate(User entity) {
         return repository.save(entity);
     }
-    public Optional<User> findByPassword(@Param("password") String password){
-        return repository.findByPassword(password);
+    public Optional<User> findByName(@Param("name") String name){
+        return repository.findByName(name);
     }
 
 
