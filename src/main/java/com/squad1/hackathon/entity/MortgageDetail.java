@@ -6,21 +6,20 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Getter
 @Setter
 @Entity
-@Table(name = "saving_details")
-public class SavingDetails {
-
+@Table(name = "mortgage_detail")
+public class MortgageDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer savingDetailId;
+    private Integer mortgageDetailId;
     private String accountNumber;
     private Integer accountAccountTypeId;
+    private Double propertyCost;
     private Double balance;
 
     @Override
@@ -30,8 +29,8 @@ public class SavingDetails {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        SavingDetails that = (SavingDetails) o;
-        return getSavingDetailId() != null && Objects.equals(getSavingDetailId(), that.getSavingDetailId());
+        MortgageDetail that = (MortgageDetail) o;
+        return getMortgageDetailId() != null && Objects.equals(getMortgageDetailId(), that.getMortgageDetailId());
     }
 
     @Override

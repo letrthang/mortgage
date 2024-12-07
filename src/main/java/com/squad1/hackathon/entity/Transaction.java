@@ -24,7 +24,7 @@ public class Transaction {
     private Integer to;
 
     @Column(name = "amount")
-    private Long amount;
+    private Double amount;
 
     @Column(name = "remark")
     private String remark;

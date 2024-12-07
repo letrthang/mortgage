@@ -6,22 +6,18 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Getter
 @Setter
 @Entity
-@Table(name = "saving_details")
-public class SavingDetails {
-
+@Table(name = "account_type")
+public class AccountType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer savingDetailId;
-    private String accountNumber;
-    private Integer accountAccountTypeId;
-    private Double balance;
+    private Integer accountId;
+    private String accountName;
 
     @Override
     public final boolean equals(Object o) {
@@ -30,8 +26,8 @@ public class SavingDetails {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        SavingDetails that = (SavingDetails) o;
-        return getSavingDetailId() != null && Objects.equals(getSavingDetailId(), that.getSavingDetailId());
+        AccountType that = (AccountType) o;
+        return getAccountId() != null && Objects.equals(getAccountId(), that.getAccountId());
     }
 
     @Override
