@@ -1,6 +1,8 @@
 package com.squad1.hackathon.repository;
 
 import com.squad1.hackathon.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,11 @@ public class UserRepoImpl {
     public List<User> findAll() {
         return repository.findAll();
     }
+
+    public Page<User> findAllPageable(Pageable pageable){
+        return repository.findAll(pageable);
+    }
+
     public User findByEmail(String email) {
         return repository.findByEmail(email);
     }

@@ -15,8 +15,7 @@ import java.util.Objects;
 @Table(name = "account_type")
 public class AccountType {
     @Id
-    @Column(nullable = false)
-    private Long id;
+    @Column(name = "account_id", nullable = false, unique = true)
     private Integer accountId;
     private String accountName;
 

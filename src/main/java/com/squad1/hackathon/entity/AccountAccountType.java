@@ -20,12 +20,12 @@ public class AccountAccountType {
     private Integer accountAccountTypeId;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "accountId")
-    private AccountType accountType;
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+    private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "account_type_id", referencedColumnName = "accountId")
-    private AccountType account;
+    @JoinColumn(name = "account_type_id", referencedColumnName = "account_id")
+    private AccountType accountType;
 
     @Override
     public final boolean equals(Object o) {
