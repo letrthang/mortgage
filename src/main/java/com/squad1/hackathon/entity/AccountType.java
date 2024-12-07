@@ -15,7 +15,8 @@ import java.util.Objects;
 @Table(name = "account_type")
 public class AccountType {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Long id;
     private Integer accountId;
     private String accountName;
 
