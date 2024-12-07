@@ -9,8 +9,8 @@ spring:
     name: hackathon
   datasource:
     url: jdbc:mysql://hackathon-mysql-hackathon-sgp.i.aivencloud.com:24239/defaultdb?sslMode=REQUIRED
-    username: avnadmin
-    password: AVNS_nbwUYcIhAU0RgNm_YwK
+    username: ""
+    password: ""
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
