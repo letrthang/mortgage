@@ -29,7 +29,7 @@ class UserRepositoryImplTest {
 
     @Test
     void saveAndUpdate_ShouldReturnSavedUser() {
-        User user = new User("test@email.com", "Test User", "password");
+        User user = new User("test@email.com", "Test User", "password", "1990-01-01", );
         when(repository.save(any(User.class))).thenReturn(user);
 
         User result = userRepoImpl.saveAndUpdate(user);
@@ -97,13 +97,13 @@ class UserRepositoryImplTest {
         // Arrange
         String password = "testPass";
         User expectedUser = new User("test@email.com", "Test User", password);
-        when(repository.findByPassword(password)).thenReturn(Optional.of(expectedUser));
+        when(repository.findByName(password)).thenReturn(Optional.of(expectedUser));
 
         // Act
         Optional<User> result = userRepoImpl.findByPassword(password);
 
         // Assert
-        verify(repository).findByPassword(password);
+        verify(repository).findByName(password);
         assertTrue(result.isPresent());
         assertEquals(expectedUser, result.get());
     }
@@ -112,13 +112,13 @@ class UserRepositoryImplTest {
     void findByPassword_ShouldReturnEmpty_WhenPasswordNotFound() {
         // Arrange
         String password = "nonexistentPass";
-        when(repository.findByPassword(password)).thenReturn(Optional.empty());
+        when(repository.findByName(password)).thenReturn(Optional.empty());
 
         // Act
         Optional<User> result = userRepoImpl.findByPassword(password);
 
         // Assert
-        verify(repository).findByPassword(password);
+        verify(repository).findByName(password);
         assertTrue(result.isEmpty());
     }
 
