@@ -21,11 +21,11 @@ public class AccountAccountType {
 
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "accountId")
-    private AccountType AccountId;
+    private AccountType accountType;
 
     @ManyToOne
     @JoinColumn(name = "account_type_id", referencedColumnName = "accountId")
-    private AccountType AccountTypeId;
+    private AccountType account;
 
     @Override
     public final boolean equals(Object o) {
