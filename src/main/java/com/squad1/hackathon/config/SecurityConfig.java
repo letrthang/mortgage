@@ -16,7 +16,7 @@ public class SecurityConfig {
                         .requestMatchers("/UserServices/**").permitAll()  // Allow UserServices endpoints
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
-                );
+                ); // basic bearer authentication
         return http.build();
     }
 }
