@@ -1,5 +1,8 @@
 server:
-  port: 9090
+  port: ${PORT:9090}
+  servlet:
+    session:
+      timeout: 10m
 
 spring:
   devtools:
@@ -7,18 +10,38 @@ spring:
       enabled: 'false'
   application:
     name: hackathon
-  datasource:
-    url: jdbc:mysql://hackathon-mysql-hackathon-sgp.i.aivencloud.com:24239/defaultdb?sslMode=REQUIRED
-    username: ""
-    password: ""
-    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: false
+    open-in-view: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        implicit-strategy: org.hibernate.boot.model.naming.SpringImplicitNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.SpringPhysicalNamingStrategy
+        enable_lazy_load_no_trans: true
+        query:
+          plan_paramter_metadata_max_size: '32'
+          plan_cache_max_siz: '32'
+        show_sql: 'false'
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: v1
+    hibernate:
+      ddl-auto: none
+
+  datasource:
+    hikari:
+      connection-timeout: '60000'
+      pool-name: DataHikariCP
+      idle-timeout: '60000'
+      maximum-pool-size: '100'
+      max-lifetime: '1800000'
+      connection-test-query: select 1
+      minimum-idle: '10'
+      schema: v1
+    password: ""
+    username: avnadmin
+    url: jdbc:postgresql://hackathon-hackathon-sgp.i.aivencloud.com:24239/defaultdb?sslmode=require&prepareThreshold=0
+    type: com.zaxxer.hikari.HikariDataSource
+
 
   rabbitmq:
     host: localhost
