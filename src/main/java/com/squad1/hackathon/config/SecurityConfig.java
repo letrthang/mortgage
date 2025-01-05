@@ -17,6 +17,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 ); // basic bearer authentication
+        // using json token
         return http.build();
     }
 }
